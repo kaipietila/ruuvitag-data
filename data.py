@@ -1,5 +1,3 @@
-from settings import db_settings
-
 from influxdb import InfluxDBClient
 from ruuvitag_sensor.ruuvi import RuuviTagSensor
 
