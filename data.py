@@ -4,7 +4,7 @@ from influxdb import InfluxDBClient
 from ruuvitag_sensor.ruuvi import RuuviTagSensor
 
 
-client = InfluxDBClient(host=db_settings.HOST, port=db_settings.PORT, database=db_settings.DATABASE_NAME)
+client = InfluxDBClient(host='localhost', port=8086, database='ruuvi')
 
 def write_to_influxdb(received_data):
 
