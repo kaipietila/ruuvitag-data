@@ -14,15 +14,15 @@ def can_write_results(mac):
     global macs
     time_now = datetime.now()
     if macs.get(mac):
-        time_elasped = time_now - macs[mac]['lastest_time']
+        time_elasped = time_now - macs[mac]['last_write_time']
         if time_elasped.seconds > 59:
-            macs[mac]['lastest_time'] = time_now
+            macs[mac]['last_write_time'] = time_now
             return True
         else:
             return False
     else:
         macs[mac] = {}
-        macs[mac]['last_time'] = time_now
+        macs[mac]['last_write_time'] = time_now
         return True
     
 def write_to_influxdb(received_data):
