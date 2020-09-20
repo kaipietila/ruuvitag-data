@@ -69,6 +69,7 @@ def write_to_influxdb(received_data):
         }
     ]
     client.write_points(json_body)
+    print(f'Processed data for {mac} at {datetime.now()}')
 
 def handle_data(received_data):
     mac = received_data[0]
