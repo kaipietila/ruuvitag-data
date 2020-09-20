@@ -13,7 +13,7 @@ macs = {}
 def can_write_results(mac):
     global macs
     time_now = datetime.now()
-    if macs[mac]:
+    if macs.get(mac):
         time_elasped = time_now - macs[mac]['lastest_time']
         if time_elasped.seconds > 59:
             macs[mac]['lastest_time'] = time_now
