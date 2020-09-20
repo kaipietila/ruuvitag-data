@@ -18,13 +18,13 @@ def write_to_influxdb(received_data):
         fields['temperature'] = payload['temperature'] 
     if ('humidity' in payload):
         fields['humidity'] = payload['humidity'] 
-    if ('pressure' in payload)
+    if ('pressure' in payload):
         fields['pressure'] = payload['pressure'] 
     if ('acceleration_x' in payload):
         fields['acceleration_x'] = payload['acceleration_x']
     if ('acceleration_y' in payload):
         fields['acceleration_y'] = payload['acceleration_y'] 
-    if ('acceleration_z' in payload)
+    if ('acceleration_z' in payload):
         fields['acceleration_z'] = payload['acceleration_z'] 
     if ('battery' in payload):
         fields['battery_voltage'] = payload['battery']/1000.0
