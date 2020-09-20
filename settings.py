@@ -1,7 +1,7 @@
 
 
 db_settings = {
-    HOST: '',
-    PORT: 0,
-    DATABASE_NAME: '',
+    HOST: 'localhost',
+    PORT: 8086,
+    DATABASE_NAME: 'ruuvi',
 }
