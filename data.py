@@ -1,13 +1,30 @@
+from datetime import datetime
 from influxdb import InfluxDBClient
 from ruuvitag_sensor.ruuvi import RuuviTagSensor
-
-MACS = {
-    'Out':''
-}
+from ruuvitag_sensor.ruuvi import RunFlag
 
 
 client = InfluxDBClient(host='localhost', port=8086, database='ruuvi')
 
+run_flag = RunFlag()
+
+macs = {}
+
+def can_write_results(mac):
+    global macs
+    time_now = datetime.now()
+    if macs[mac]:
+        time_elasped = time_now - macs[mac]['lastest_time']
+        if time_elasped.seconds > 59:
+            macs[mac]['lastest_time'] = time_now
+            return True
+        else:
+            return False
+    else:
+        macs[mac] = {}
+        macs[mac]['last_time'] = time_now
+        return True
+    
 def write_to_influxdb(received_data):
 
     mac = received_data[0]
@@ -53,8 +70,13 @@ def write_to_influxdb(received_data):
     ]
     client.write_points(json_body)
 
+def handle_data(received_data):
+    mac = received_data[0]
+    if can_write_results(mac):
+        write_to_influxdb(received_data)
+
 def get_data_and_write():
-    RuuviTagSensor.get_datas(write_to_influxdb)
+    RuuviTagSensor.get_datas(handle_data, run_flag=run_flag)
 
 if __name__ == "__main__":
     get_data_and_write()
