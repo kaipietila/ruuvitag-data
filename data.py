@@ -1,6 +1,10 @@
 from influxdb import InfluxDBClient
 from ruuvitag_sensor.ruuvi import RuuviTagSensor
 
+MACS = {
+    'Out':''
+}
+
 
 client = InfluxDBClient(host='localhost', port=8086, database='ruuvi')
 
@@ -36,6 +40,7 @@ def write_to_influxdb(received_data):
         fields['tag_iD'] = payload['tagID']
     if ('rssi' in payload):
         fields['rssi'] = payload['rssi'] 
+    
     json_body = [
         {
             'measurement': 'ruuvi_measurements',
@@ -47,7 +52,6 @@ def write_to_influxdb(received_data):
         }
     ]
     client.write_points(json_body)
-    print(fields)
 
 def get_data_and_write():
     RuuviTagSensor.get_datas(write_to_influxdb)
