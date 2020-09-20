@@ -47,6 +47,7 @@ def write_to_influxdb(received_data):
         }
     ]
     client.write_points(json_body)
+    print(fields)
 
 def get_data_and_write():
     RuuviTagSensor.get_datas(write_to_influxdb)
