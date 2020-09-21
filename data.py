@@ -9,8 +9,13 @@ client = InfluxDBClient(host='localhost', port=8086, database='ruuvi')
 run_flag = RunFlag()
 
 macs = {}
+mac_list = []
 
-def can_write_results(mac):
+def can_write_once_per_minute(mac):
+    """
+    Restricts writes to the db to once a minute if data is not required
+    to be more frequent
+    """
     global macs
     time_now = datetime.now()
     if macs.get(mac):
@@ -24,6 +29,21 @@ def can_write_results(mac):
         macs[mac] = {}
         macs[mac]['last_write_time'] = time_now
         return True
+    
+def can_write_once_per_mac(mac):
+    """
+    One write per mac per process. Meant to be used as cronjob every x minutes
+    """
+    global mac_list
+    if mac in mac_list and len(mac_list) == 3:
+        run_flag.running = False
+        return False
+    elif mac in mac_list:
+        return False
+    else:
+        mac_list.append(mac)
+        return True
+
     
 def write_to_influxdb(received_data):
 
@@ -72,8 +92,11 @@ def write_to_influxdb(received_data):
     print(f'Processed data for {mac} at {datetime.now()}')
 
 def handle_data(received_data):
+    """
+    Checks that data is not written too frequently. Otherwise just returns
+    """
     mac = received_data[0]
-    if can_write_results(mac):
+    if can_write_once_per_mac(mac):
         write_to_influxdb(received_data)
 
 def get_data_and_write():
