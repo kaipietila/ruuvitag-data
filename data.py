@@ -108,9 +108,9 @@ def handle_data(received_data):
     handle_data_not_being_received()
 
 def get_data_and_write():
+    global start_time
+    start_time = datetime.now()
     RuuviTagSensor.get_datas(handle_data, run_flag=run_flag)
 
 if __name__ == "__main__":
-    global start_time
-    start_time = datetime.now()
     get_data_and_write()
