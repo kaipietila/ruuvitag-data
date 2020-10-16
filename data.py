@@ -11,6 +11,8 @@ run_flag = RunFlag()
 macs = {}
 mac_list = []
 
+start_time = ''
+
 def can_write_once_per_minute(mac):
     """
     Restricts writes to the db to once a minute if data is not required
@@ -44,6 +46,11 @@ def can_write_once_per_mac(mac):
         mac_list.append(mac)
         return True
 
+def handle_data_not_being_received()
+    global start_time
+    time_elasped = datetime.now() - start_time
+    if time_elasped.seconds > 59:
+        run_flag.running = False
     
 def write_to_influxdb(received_data):
 
@@ -98,9 +105,12 @@ def handle_data(received_data):
     mac = received_data[0]
     if can_write_once_per_mac(mac):
         write_to_influxdb(received_data)
+    handle_data_not_being_received()
 
 def get_data_and_write():
     RuuviTagSensor.get_datas(handle_data, run_flag=run_flag)
 
 if __name__ == "__main__":
+    global start_time
+    start_time = datetime.now()
     get_data_and_write()
