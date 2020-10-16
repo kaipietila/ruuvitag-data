@@ -46,7 +46,7 @@ def can_write_once_per_mac(mac):
         mac_list.append(mac)
         return True
 
-def handle_data_not_being_received()
+def handle_data_not_being_received():
     global start_time
     time_elasped = datetime.now() - start_time
     if time_elasped.seconds > 59:
